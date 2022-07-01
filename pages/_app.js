@@ -1,13 +1,13 @@
-import '../styles/globals.css'
-import Nav from '../components/Nav'
+import "../styles/globals.css";
+import Nav from "./components/Nav";
 
 function MyApp({ Component, pageProps }) {
   return (
     <div>
-    	<Nav />
-    	<Component {...pageProps} />
+      <Nav />
+      <Component {...pageProps} />
     </div>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

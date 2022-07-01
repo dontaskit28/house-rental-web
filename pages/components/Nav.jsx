@@ -28,7 +28,7 @@ export default function Nav() {
   ];
   const [isOpen, SetIsOpen] = useState(false);
   return (
-    <div className=" relative h-16  md:space-x-8 items-center w-full rounded-lg text-white flex bg-gradient-to-r from-fuchsia-600 to-pink-600">
+    <div className=" sticky top-0 z-10 h-16  md:space-x-8 items-center w-full rounded-lg text-white flex bg-gradient-to-r from-fuchsia-600 to-pink-600">
       <div className=" pl-8">
         <ImHome className="h-8 w-8" />
       </div>
