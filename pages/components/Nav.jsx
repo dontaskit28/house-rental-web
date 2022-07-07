@@ -11,18 +11,16 @@ export default function Nav() {
       route: "/",
     },
     {
-      name: "Login",
-      route: "/login",
+      name: "About",
+      route: "/about",
     },
-    ,
     {
       name: "Profile",
       route: "/profile",
     },
-    ,
     {
-      name: "About",
-      route: "/about",
+      name: "Login",
+      route: "/login",
     },
     ,
   ];
@@ -62,7 +60,9 @@ export default function Nav() {
         <div className="absolute flex rounded-lg flex-col bg-gradient-to-r from-fuchsia-600 to-pink-600 top-16 p-5 max-w-screen w-full">
           {routes.map((e, i) => (
             <Link href={e.route} key={i}>
-              <a className="hover:cursor-pointer hover:bg-pink-500 p-2 rounded-md">
+              <a
+                onClick={() => SetIsOpen(false)}
+                className="hover:cursor-pointer hover:bg-pink-500 p-2 rounded-md">
                 {e.name}
               </a>
             </Link>

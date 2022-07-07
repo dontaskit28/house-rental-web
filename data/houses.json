@@ -1,0 +1,58 @@
+[
+    {
+      "_id": 1,
+      "image": "/../public/images/a.jpg",
+      "location": "RGUKT, Nuzvid",
+      "buy": 3000,
+      "rent": 400
+    },
+    {
+      "_id": 2,
+      "image": "/../public/images/b.jpg",
+      "location": "RGUKT, Nuzvid",
+      "buy": 4000,
+      "rent": 450
+    },
+    {
+      "_id": 3,
+      "image": "/../public/images/c.jpg",
+      "location": "RGUKT, Nuzvid",
+      "buy": 9000,
+      "rent": 800
+    },
+    {
+      "_id": 4,
+      "image": "/../public/images/e.jpg",
+      "location": "RGUKT, Nuzvid",
+      "buy": 2500,
+      "rent": 200
+    },
+    {
+      "_id": 5,
+      "image": "/../public/images/f.jpg",
+      "location": "RGUKT, Nuzvid",
+      "buy": 4500,
+      "rent": 340
+    },
+    {
+      "_id": 6,
+      "image": "/../public/images/g.jpg",
+      "location": "RGUKT, Nuzvid",
+      "buy": 3320,
+      "rent": 430
+    },
+    {
+      "_id": 7,
+      "image": "/../public/images/h.jpg",
+      "location": "RGUKT, Nuzvid",
+      "buy": 3210,
+      "rent": 430
+    },
+    {
+      "_id": 8,
+      "image": "/../public/images/d.jpg",
+      "location": "RGUKT, Nuzvid",
+      "buy": 3333,
+      "rent": 400
+    }
+]

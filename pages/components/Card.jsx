@@ -1,9 +1,20 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 export default function Card({ details }) {
+  const router = useRouter();
+  const viewHouse = useCallback(
+    (houseId) => {
+      router.push(`/house/${houseId}`);
+    },
+    [router]
+  );
   return (
-    <div className="">
-      <div className="w-80 p-2 h-72 rounded flex flex-col justify-evenly">
+    <div>
+      <div
+        className="w-80 p-2 h-72 rounded flex flex-col justify-evenly hover:cursor-pointer"
+        onClick={() => viewHouse(details._id)}>
         <Image
           className="rounded"
           src={details.image}
