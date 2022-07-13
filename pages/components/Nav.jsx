@@ -3,6 +3,7 @@ import { ImHome } from "react-icons/im";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
 import Link from "next/link";
+import Router, { useRouter } from "next/router";
 
 export default function Nav() {
   const routes = [
@@ -11,12 +12,12 @@ export default function Nav() {
       route: "/",
     },
     {
-      name: "About",
-      route: "/about",
-    },
-    {
       name: "Profile",
       route: "/profile",
+    },
+    {
+      name: "Upload",
+      route: "/uploadHouse",
     },
     {
       name: "Login",
@@ -25,8 +26,9 @@ export default function Nav() {
     ,
   ];
   const [isOpen, SetIsOpen] = useState(false);
+  const router = useRouter();
   return (
-    <div className=" sticky top-0 z-10 h-16  md:space-x-8 items-center w-full rounded-lg text-white flex bg-gradient-to-r from-fuchsia-600 to-pink-600">
+    <div className="sticky top-0 border-b-2 bg-white z-10 h-14  md:space-x-8 items-center w-full rounded-lg flex ">
       <div className=" pl-8">
         <ImHome className="h-8 w-8" />
       </div>
@@ -36,7 +38,12 @@ export default function Nav() {
       <div className="md:flex hidden space-x-5">
         {routes.map((e, i) => (
           <Link href={e.route} key={i}>
-            <a className="hover:cursor-pointer hover:bg-pink-500 px-4 py-2 rounded">
+            <a
+              className={
+                e.route == router.pathname
+                  ? "hover:cursor-pointer bg-gray-300 px-4 py-2 rounded"
+                  : "hover:cursor-pointer px-4 py-2 rounded"
+              }>
               {e.name}
             </a>
           </Link>
@@ -57,12 +64,12 @@ export default function Nav() {
       )}
 
       {isOpen && (
-        <div className="absolute flex rounded-lg flex-col bg-gradient-to-r from-fuchsia-600 to-pink-600 top-16 p-5 max-w-screen w-full">
+        <div className="absolute flex rounded-lg flex-col bg-white top-14 p-5 max-w-screen w-full">
           {routes.map((e, i) => (
             <Link href={e.route} key={i}>
               <a
                 onClick={() => SetIsOpen(false)}
-                className="hover:cursor-pointer hover:bg-pink-500 p-2 rounded-md">
+                className="hover:cursor-pointer hover:bg-gray-300 p-2 rounded-md">
                 {e.name}
               </a>
             </Link>

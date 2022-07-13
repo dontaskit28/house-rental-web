@@ -1,10 +1,34 @@
 import { getAllHouses } from "../lib/allHouses";
 import Card from "./components/Card";
+import { useState } from "react";
 
 export default function House({ houses }) {
+  const [search, setSearch] = useState("");
   return (
-    <div className="mt-10 grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-3">
-      {[houses.map((house) => <Card details={house} key={house._id} />)]}
+    <div>
+      <div className="flex flex-col items-center">
+        <input
+          className=" p-2 border-2 border-gray-200 rounded w-96 m-2"
+          type="text"
+          placeholder="Search Location"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+      <div className="mt-10 grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-y-10">
+        {[
+          houses
+            .filter((house) => {
+              if (search == "") return house;
+              if (
+                house.location
+                  .toLowerCase()
+                  .includes(search.toLocaleLowerCase())
+              )
+                return house;
+            })
+            .map((house) => <Card details={house} key={house._id} />),
+        ]}
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export default function Login() {
   return (
     <div className="w-2/4 mt-24 m-auto">
       <form className="flex flex-col items-center p-2 space-y-4">
-        <label className="text-2xl font-bold">Login Form</label>
+        <label className="text-2xl font-bold">Login</label>
         <input
           className=" sm:w-2/4 p-2 border-gray-300 border-2 rounded"
           type="email"

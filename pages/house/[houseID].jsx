@@ -3,18 +3,27 @@ import Image from "next/image";
 
 const HouseId = ({ house }) => {
   return (
-    <div className="flex justify-center border-2 border-black-500">
-      <div className="flex">
+    <div className="flex h-96 w-3/5 m-auto items-center border-2 shadow-md border-black-500 rounded-md mt-20 p-4">
+      <div className="flex items-center gap-10">
         <Image
           src={house.image}
           alt={house.location}
-          width={350}
-          height={350}
+          width={800}
+          height={800}
+          className="rounded-md"
         />
-        <div className="flex flex-col">
-          <div>Buy: ${house.buy}</div>
-          <div>Rent: ${house.rent}</div>
-          <div>Location: {house.location}</div>
+        <div className="flex flex-col gap-5">
+          <div className="w-full">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo
+            voluptatum iste totam ullam reprehenderit non repudiandae,
+            reiciendis voluptatem magni quae ea sint. At sapiente suscipit quo
+            qui iste explicabo commodi?
+          </div>
+          <div className="text-2xl font-bold">
+            Buy: {house.buy == "NA" ? "NA" : "$" + house.buy}
+          </div>
+          <div className="text-2xl font-bold">Rent: ${house.rent}/month</div>
+          <div className="text-2xl font-bold">Location: {house.location}</div>
         </div>
       </div>
     </div>
