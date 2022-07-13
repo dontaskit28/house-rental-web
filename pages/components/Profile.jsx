@@ -1,21 +1,31 @@
 import Image from "next/image";
-import profile from "../../public/a.jpg";
+import profile from "../../public/images/1.jpg";
 
 export default function Profile() {
   return (
-    <div className="flex justify-center mt-10">
-      <div className="sm:w-2/3 md:w-1/2 w-full border-2 rounded-lg h-96 p-2">
-        <div className="flex justify-between p-4">
-          <Image
-            className="rounded-full"
-            alt="profile"
-            height={200}
-            width={200}
-            src={profile}
-          />
-          <div className="flex flex-col ">
-            <div className="text-3xl font-bold">Your Name</div>
-            <div>Your Email</div>
+    <div className="bg-gray-200 font-sans h-screen w-full flex flex-row justify-center items-center">
+      <div className="card w-96 mx-auto bg-white  shadow-xl hover:shadow">
+        <img
+          className="w-32 mx-auto rounded-full -mt-20 border-8 border-white"
+          src="https://avatars.githubusercontent.com/u/67946056?v=4"
+          alt="profile"
+        />
+        <div className="text-center mt-2 text-3xl font-medium">Ajo Alex</div>
+        <div className="text-center mt-2 font-light text-sm">@devpenzil</div>
+        <div className="text-center font-normal text-lg">Kerala</div>
+        <div className="px-6 text-center mt-2 font-light text-sm">
+          <p>
+            Front end Developer, avid reader. Love to take a long walk, swim
+          </p>
+        </div>
+        {/* <hr className="mt-8"> */}
+        <div className="flex p-4">
+          <div className="w-1/2 text-center">
+            <span className="font-bold">1.8 k</span> Followers
+          </div>
+          <div className="w-0 border border-gray-300"></div>
+          <div className="w-1/2 text-center">
+            <span className="font-bold">2.0 k</span> Following
           </div>
         </div>
       </div>
