@@ -3,7 +3,7 @@ import { ImHome } from "react-icons/im";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
 import Link from "next/link";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 export default function Nav() {
   const routes = [
@@ -32,10 +32,12 @@ export default function Nav() {
       <div className=" pl-8">
         <ImHome className="h-8 w-8" />
       </div>
-      <div className="text-center md:text-start font-semibold m-auto flex-1 text-2xl">
+      <Link href="/">
+      <div className="text-center md:text-start hover:cursor-pointer font-semibold m-auto flex-1 text-2xl">
         WELCOMES YOU
       </div>
-      <div className="md:flex hidden space-x-5">
+      </Link>
+      <div className="md:flex hidden space-x-5 p-2">
         {routes.map((e, i) => (
           <Link href={e.route} key={i}>
             <a

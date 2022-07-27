@@ -1,5 +1,6 @@
 import { getHouseById } from "../../lib/allHouses";
 import Image from "next/image";
+import Link from "next/link";
 
 const HouseId = ({ house }) => {
   return (
@@ -24,6 +25,9 @@ const HouseId = ({ house }) => {
           </div>
           <div className="text-2xl font-bold">Rent: ${house.rent}/month</div>
           <div className="text-2xl font-bold">Location: {house.location}</div>
+          <Link href={`/checkout/${house._id}`}>
+            <button className="bg-gray-300 p-2 border-0 rounded-md">Checkout</button>
+          </Link>
         </div>
       </div>
     </div>

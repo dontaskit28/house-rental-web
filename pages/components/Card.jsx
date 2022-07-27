@@ -10,38 +10,40 @@ export default function Card({ details }) {
     },
     [router]
   );
+  const checkout = () =>{
+    router.push(`/checkout/${details._id}`)
+  }
 
   return (
     <div className="flex justify-center">
       <div
-        className="rounded-lg shadow-lg bg-white max-w-sm hover:cursor-pointer"
-        onClick={() => viewHouse(details._id)}>
-        <a href="#!" data-mdb-ripple="true" data-mdb-ripple-color="light">
+        className="rounded-lg shadow-lg bg-white max-w-sm hover:scale-110">
           <Image
-            className="rounded-t-lg hover:scale-125"
+            className="rounded-t-lg hover:scale-125 hover:cursor-pointer"
+            onClick={() => viewHouse(details._id)}
             src={details.image}
             alt=""
             height={250}
             width={390}
           />
-        </a>
         <div className="p-6">
           <h5 className="text-gray-900 text-xl font-medium mb-2">
             {details.location}
           </h5>
           <p className="text-gray-700 text-base mb-4">
-            Some quick example text to build on the card title and make up the
-            bulk of the card content.
+            Some quick example text to build
           </p>
           <div className="flex justify-evenly">
             <button
               type="button"
-              className=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-sm leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+              onClick={checkout}
+              className=" inline-block px-6 py-2.5 bg-gray-500 text-white font-medium text-sm leading-tight uppercase rounded shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out">
               {"Buy : " + details.buy + "/-"}
             </button>
             <button
               type="button"
-              className=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+              onClick={checkout}
+              className=" inline-block px-6 py-2.5 bg-gray-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out">
               {"Rent : " + details.rent + "/-"}
             </button>
           </div>
