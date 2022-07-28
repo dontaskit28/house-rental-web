@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useState } from "react";
-import axios from 'axios';
 
 
 export default function Signup() {
@@ -18,21 +17,23 @@ export default function Signup() {
       return alert("Password must be same")
     }
     const data ={
-      first_name,last_name,user_name,email,password,
+      first_name,last_name,user_name,email,password
     }
-    console.log(data);
     try{
-      const response = await axios({
-        url:"https://rentalweb.herokuapp.com/auth/register",
-        method:"POST",
-        mode:'no-cors',
-        data:data,
-        headers:{
-          'Content-Type':'application/json',
-          'Allow-Control-Allow-Origin':'*',
+      // const response = await fetch("https://reqres.in/api/users")
+      const response = await fetch("https://rentalweb.herokuapp.com/auth/register",{
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body:JSON.stringify(data),
       })
-      console.log(response);
+      if(response.ok){
+        const user = await response.json()
+        console.log(user);
+      }else{
+        console.log("Not succesful")
+      }
     }catch(err){
       console.log("Error",err);
     }
