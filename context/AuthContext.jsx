@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getAuth } from "firebase/auth";
+import { v4 } from "uuid";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -10,7 +10,8 @@ import { auth } from "../config/firebase";
 import { db } from "../config/firebase";
 import { storage } from "../config/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc } from "firebase/firestore";
+import {useCollectionData} from 'react-firebase-hooks/firestore'
 
 const AuthContext = createContext({});
 
@@ -40,21 +41,12 @@ export const AuthContextProvider = ({ children }) => {
       name: data.name,
       isSeller: data.role == "landloard",
     });
-    if (data.role == "landloard") {
-      return await addDoc(users, {
-        email: data.email,
-        name: data.name,
-        houses: [],
-        isSeller: true,
-      });
-    }else{
-      return await addDoc(users, {
-        email: data.email,
-        name: data.name,
-        wishlist: [],
-        isSeller: false,
-      });
-    }
+    return await addDoc(users, {
+      email: data.email,
+      name: data.name,
+      wishlist: [],
+      isSeller: data.role == "landloard",
+    });
   };
   const login = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
@@ -70,9 +62,10 @@ export const AuthContextProvider = ({ children }) => {
   const uploadHome = async (data) => {
     if (user && user.isSeller) {
       try {
+        const house_id = v4();
         const storageRef = ref(
           storage,
-          `houses/${data.image.name + "_" + user.email}`
+          `houses/${data.image.name + "_" + house_id}`
         );
         const houses = collection(db, "houses");
         const uploadTask = uploadBytesResumable(storageRef, data.image);
@@ -87,11 +80,13 @@ export const AuthContextProvider = ({ children }) => {
           async () => {
             getDownloadURL(uploadTask.snapshot.ref).then(
               async (downloadURL) => {
-                return await addDoc(houses, {
+                await addDoc(houses, {
                   ...data,
+                  _id: house_id,
                   image: downloadURL,
                   owner: user.email,
                 });
+                return alert("Uploaded Succesfully...");
               }
             );
           }

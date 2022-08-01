@@ -1,11 +1,15 @@
-import { getAllHouses } from "../lib/allHouses";
 import Card from "./components/Card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { db } from "../config/firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { collection } from "firebase/firestore";
 
-export default function House({ houses }) {
+const House = () => {
   const [search, setSearch] = useState("");
+  const query = collection(db, "houses");
+  const [docs,loading] = useCollectionData(query);
   return (
-    <div className="h-full bg-gray-100">
+    <div className="h-screen bg-gray-100">
       <div className="flex flex-col items-center justify-center">
         <input
           className=" p-3 border-2 border-gray-200 rounded-lg w-96 m-2"
@@ -14,9 +18,9 @@ export default function House({ houses }) {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <div className="mt-10 grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-y-10">
+      {!loading && <div className="mt-10 grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-y-10">
         {[
-          houses
+          docs
             .filter((house) => {
               if (search == "") return house;
               if (
@@ -28,16 +32,9 @@ export default function House({ houses }) {
             })
             .map((house) => <Card details={house} key={house._id} />),
         ]}
-      </div>
+      </div>}
     </div>
   );
-}
-
-export const getServerSideProps = async () => {
-  const houses = await getAllHouses();
-  return {
-    props: {
-      houses,
-    },
-  };
 };
+export default House;
+

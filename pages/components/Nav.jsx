@@ -8,21 +8,6 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function Nav() {
   const { user, logout } = useAuth();
-  let routes = [
-    {
-      name: "Home",
-      route: "/",
-    },
-    // {
-    //   name: "Upload",
-    //   route: "/profile",
-    // },
-    // {
-    //   name: "Upload",
-    //   route: "/uploadHouse",
-    // },
-    ,
-  ];
   const [isOpen, SetIsOpen] = useState(false);
   const router = useRouter();
   return (

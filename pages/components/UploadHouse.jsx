@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useRouter } from 'next/router';
 
 const UploadHouse = () => {
   const [data, setData] = useState({
@@ -11,14 +10,10 @@ const UploadHouse = () => {
     image: "",
   });
   const {uploadHome} = useAuth()
-  const router = useRouter();
   const handleUpload = async(e) => {
     e.preventDefault();
-    console.log(data);
     try {
       await uploadHome(data);
-      alert("Uploaded House Successfully...");
-      router.push("/")
     } catch (err) {
       alert(err);
     }

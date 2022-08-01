@@ -10,16 +10,13 @@ export default function Card({ details }) {
     },
     [router]
   );
-  const checkout = () =>{
-    router.push(`/checkout/${details._id}`)
-  }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center hover:shadow-lg group ">
       <div
-        className="rounded-lg shadow-lg bg-white max-w-sm hover:scale-110">
+        className="rounded-lg shadow-md bg-white max-w-sm">
           <Image
-            className="rounded-t-lg hover:scale-125 hover:cursor-pointer"
+            className="rounded-t-lg group-hover:scale-[102%] hover:cursor-pointer"
             onClick={() => viewHouse(details._id)}
             src={details.image}
             alt=""

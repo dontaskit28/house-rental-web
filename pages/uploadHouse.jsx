@@ -1,4 +1,3 @@
-
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
 import UploadHouse from "./components/UploadHouse";
@@ -33,3 +32,4 @@ const uploadHouse = () => {
 };
 
 export default uploadHouse;
+
