@@ -1,13 +1,32 @@
 import Link from "next/link";
 import { useState } from "react";
+import { useAuth } from "./../context/AuthContext";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {  afterLogin, login } = useAuth();
+  const router = useRouter();
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      await afterLogin(email);
+      router.push("/");
+    } catch (err) {
+      console.log("Error: ", err);
+      alert(err)
+    }
+  };
+  
   return (
     <div className="w-full max-w-xs m-auto mt-24">
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <form
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        onSubmit={handleLogin}
+      >
         <div className="block text-center text-gray-800 text-2xl font-bold mb-4">
           Login
         </div>
@@ -36,7 +55,8 @@ export default function Login() {
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button">
+            type="submit"
+          >
             Sign In
           </button>
           <Link href="/signup">
@@ -48,34 +68,4 @@ export default function Login() {
       </form>
     </div>
   );
-  // return (
-  //   <div className="w-2/4 mt-24 m-auto">
-  //     <form className="flex flex-col items-center p-2 space-y-4">
-  //       <label className="text-2xl font-bold">Login</label>
-  //       <input
-  //         className=" sm:w-2/4 p-2 border-gray-300 border-2 rounded"
-  //         type="email"
-  //         placeholder="Email"
-  //         required
-  //         onChange={(e) => setEmail(e.target.value)}
-  //       />
-  //       <input
-  //         className="sm:w-2/4 p-2 border-gray-300 border-2 rounded"
-  //         type="password"
-  //         placeholder="Password"
-  //         required
-  //         onChange={(e) => setPassword(e.target.value)}
-  //       />
-  //       <button className="sm:w-2/4 w-full p-2 bg-gray-400 rounded">
-  //         Login
-  //       </button>
-  //       <div className="sm:w-2/4 flex justify-between">
-  //         <span className="p-2">Dont have an account?</span>
-  //         <Link href="/signup">
-  //           <a className="hover:bg-slate-300 rounded p-2"> Sign up</a>
-  //         </Link>
-  //       </div>
-  //     </form>
-  //   </div>
-  // );
 }

@@ -1,46 +1,35 @@
 import Link from "next/link";
 import { useState } from "react";
-
+import { useAuth } from "./../context/AuthContext";
+import { useRouter } from "next/router";
 
 export default function Signup() {
-  const [{ first_name,last_name,user_name,email, password, confirmPass }, setData] = useState({
-    first_name:"",
-    last_name:"",
-    user_name:"",
+  const { createUser, signup } = useAuth();
+  const router = useRouter();
+  const [data, setData] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPass: "",
+    role: "tenant",
   });
-  const Register = async (e) =>{
+  const Register = async (e) => {
     e.preventDefault();
-    if (confirmPass != password){
-      return alert("Password must be same")
+    try {
+      await signup(data.email,data.password);
+      await createUser(data);
+      router.push("/");
+    } catch (err) {
+      console.log("Error: ", err);
+      alert(err)
     }
-    const data ={
-      first_name,last_name,user_name,email,password
-    }
-    try{
-      // const response = await fetch("https://reqres.in/api/users")
-      const response = await fetch("https://rentalweb.herokuapp.com/auth/register",{
-        method:'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body:JSON.stringify(data),
-      })
-      if(response.ok){
-        const user = await response.json()
-        console.log(user);
-      }else{
-        console.log("Not succesful")
-      }
-    }catch(err){
-      console.log("Error",err);
-    }
-  }
+  };
   return (
     <div className="w-full max-w-sm m-auto mt-10">
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={Register}>
+      <form
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        onSubmit={Register}
+      >
         <div className="block text-center text-gray-800 text-2xl font-bold mb-4">
           Register
         </div>
@@ -48,28 +37,13 @@ export default function Signup() {
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
-            placeholder="First Name"
+            placeholder="Full Name"
             required
             onChange={(e) =>
-              setData({ first_name: e.target.value, password, confirmPass,email,last_name,user_name })
-            }
-          />
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            placeholder="Last Name"
-            required
-            onChange={(e) =>
-              setData({ last_name: e.target.value, password, confirmPass,email,first_name,user_name })
-            }
-          />
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            placeholder="user_name"
-            required
-            onChange={(e) =>
-              setData({ user_name: e.target.value, password, confirmPass,email,last_name,first_name })
+              setData({
+                ...data,
+                name: e.target.value,
+              })
             }
           />
           <input
@@ -78,7 +52,10 @@ export default function Signup() {
             placeholder="Email"
             required
             onChange={(e) =>
-              setData({ email: e.target.value, password, confirmPass,last_name,first_name,user_name })
+              setData({
+                ...data,
+                email: e.target.value,
+              })
             }
           />
           <input
@@ -87,7 +64,10 @@ export default function Signup() {
             placeholder="Password"
             required
             onChange={(e) =>
-              setData({ password: e.target.value, email, confirmPass,last_name,first_name,user_name  })
+              setData({
+                ...data,
+                password: e.target.value,
+              })
             }
           />
           <input
@@ -96,21 +76,49 @@ export default function Signup() {
             placeholder="Confirm Password"
             required
             onChange={(e) =>
-              setData({ confirmPass: e.target.value, email, password,last_name,first_name,user_name  })
+              setData({
+                ...data,
+                confirmPass: e.target.value,
+              })
             }
           />
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit">
-            Sign Up
-          </button>
-          <Link href="/login">
-            <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-              Sign In
-            </a>
-          </Link>
-        </div>
+          <div className="flex items-center justify-around mb-4 py-2 px-3">
+            <div className="flex space-x-2">
+              <input
+                type="radio"
+                value="landloard"
+                checked={data.role == "landloard"}
+                onChange={(e) => {
+                  setData({ ...data, role: e.target.value });
+                }}
+              />
+              <p>Landloard</p>
+            </div>
+            <div className="flex space-x-2">
+              <input
+                type="radio"
+                value="tenant"
+                checked={data.role == "tenant"}
+                onChange={(e) => {
+                  setData({ ...data, role: e.target.value });
+                }}
+              />
+              <p>Tenant</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              Sign Up
+            </button>
+            <Link href="/login">
+              <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+                Sign In
+              </a>
+            </Link>
+          </div>
         </div>
       </form>
     </div>

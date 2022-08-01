@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useRouter } from 'next/router';
 
 const UploadHouse = () => {
-  const styles = "p-2 border-2 border-gray-300 rounded";
   const [data, setData] = useState({
     location: "",
     buy: "",
@@ -9,49 +10,99 @@ const UploadHouse = () => {
     description: "",
     image: "",
   });
-  const upload = () => {};
+  const {uploadHome} = useAuth()
+  const router = useRouter();
+  const handleUpload = async(e) => {
+    e.preventDefault();
+    console.log(data);
+    try {
+      await uploadHome(data);
+      alert("Uploaded House Successfully...");
+      router.push("/")
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
-    <div className="w-2/3 flex justify-center text-center m-auto mt-10">
-      <form className="flex flex-col space-y-2 ">
-        <div className="text-2xl font-semibold text-center">Upload House</div>
-        <input
-          className={styles}
-          type="text"
-          required
-          placeholder="Location"
-          onChange={(e) => setData({ location: e.target.value })}
-        />
-        <input
-          className={styles}
-          s
-          type="text"
-          required
-          placeholder="Buying Price"
-          onChange={(e) => setData({ buy: e.target.value })}
-        />
-        <input
-          className={styles}
-          type="text"
-          required
-          placeholder="Rent Price"
-          onChange={(e) => setData({ rent: e.target.value })}
-        />
-        <input
-          className={styles}
-          type="text"
-          required
-          placeholder="Description"
-          onChange={(e) => setData({ description: e.target.value })}
-        />
-        <input className={styles} type="file" accept="image/*" />
-        <input
-          className="bg-gray-300 p-2 rounded hover:cursor-pointer"
-          type="submit"
-          onClick={upload}
-        />
+    <div className="flex flex-col mt-10 items-center justify-center">
+      <form
+        className="bg-white shadow-md w-full md:w-2/3 xl:w-1/3 rounded px-8 pt-6 pb-8 mb-4"
+        onSubmit={handleUpload}
+      >
+        <div className="block text-center text-gray-800 text-2xl font-bold mb-4">
+          Upload House
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Location
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="text"
+            placeholder="Location"
+            required
+            onChange={(e) => setData({ ...data, location: e.target.value })}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Buy
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="number"
+            placeholder="price for buy"
+            required
+            onChange={(e) => setData({ ...data, buy: e.target.value })}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Rent
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="number"
+            placeholder="price for rent"
+            required
+            onChange={(e) => setData({ ...data, rent: e.target.value })}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Description
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="text"
+            placeholder="Description"
+            required
+            onChange={(e) => setData({ ...data, description: e.target.value })}
+          />
+        </div>
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Image
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            type="file"
+            placeholder="Image"
+            required
+            accept="image/*"
+            onChange={(e) => setData({ ...data, image: e.target.files[0] })}
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Upload
+          </button>
+        </div>
       </form>
     </div>
   );
 };
-
 export default UploadHouse;
