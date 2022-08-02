@@ -17,7 +17,6 @@ const HouseId = () => {
         if (house._id === router.query.houseID) return setHouse(house);
       });
     }
-    console.log(house)
   })
   
   

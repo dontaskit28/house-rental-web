@@ -11,7 +11,6 @@ import { db } from "../config/firebase";
 import { storage } from "../config/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { collection, getDocs, addDoc, updateDoc } from "firebase/firestore";
-import {useCollectionData} from 'react-firebase-hooks/firestore'
 
 const AuthContext = createContext({});
 
