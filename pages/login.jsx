@@ -2,11 +2,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "./../context/AuthContext";
 import { useRouter } from "next/router";
+// import {message } from 'antd'
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {  afterLogin, login } = useAuth();
+  const {  user,afterLogin, login } = useAuth();
   const router = useRouter();
 
   const handleLogin = async (e) => {
@@ -14,15 +15,21 @@ export default function Login() {
     try {
       await login(email, password);
       await afterLogin(email);
-      router.push("/");
+      alert('Login Success')
+      if(user && user.isSeller){
+        router.push("/uploadHouse")
+      }else{
+        router.push("/house")
+      }
     } catch (err) {
       console.log("Error: ", err);
-      alert(err)
+      alert("Login Failed")
     }
   };
   
   return (
-    <div className="w-full max-w-xs m-auto mt-24">
+    <div className="max-h-[100vh] min-h-[720px] bg-gray-200 flex items-center justify center">
+    <div className="w-full max-w-xs m-auto">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={handleLogin}
@@ -38,6 +45,7 @@ export default function Login() {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="email"
             placeholder="Email"
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -49,6 +57,7 @@ export default function Login() {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
             type="password"
             placeholder="*********"
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -66,6 +75,7 @@ export default function Login() {
           </Link>
         </div>
       </form>
+    </div>
     </div>
   );
 }

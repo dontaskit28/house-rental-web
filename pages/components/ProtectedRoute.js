@@ -22,8 +22,14 @@ export const SignedIn = ({children} )=>{
     const router = useRouter();
     useEffect(()=>{
         if(user){
-            router.push('/')
+            if(user.isSeller){
+                router.push('/uploadHouse')
+            }
+            else{
+                router.push('/house')
+            }
         }
     },[router,user])
     return <>{user?null:children}</>
 }
+

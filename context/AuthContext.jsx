@@ -11,6 +11,8 @@ import { db } from "../config/firebase";
 import { storage } from "../config/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { collection, getDocs, addDoc, updateDoc } from "firebase/firestore";
+// import {message } from 'antd'
+
 
 const AuthContext = createContext({});
 
@@ -74,7 +76,9 @@ export const AuthContextProvider = ({ children }) => {
             console.log(snapshot);
           },
           (error) => {
-            alert(error);
+            // message.error(error);
+            alert(error)
+
           },
           async () => {
             getDownloadURL(uploadTask.snapshot.ref).then(
@@ -85,13 +89,14 @@ export const AuthContextProvider = ({ children }) => {
                   image: downloadURL,
                   owner: user.email,
                 });
-                return alert("Uploaded Succesfully...");
+                return alert('Uploaded House Succesfully')
               }
             );
           }
         );
       } catch (err) {
-        alert("Home not uploaded...");
+        // message.error('Failed to Upload House')
+        alert('Failed to Upload House')
       }
     }
   };
@@ -99,6 +104,8 @@ export const AuthContextProvider = ({ children }) => {
   const logout = async () => {
     setUser(null);
     await signOut(auth);
+    // message.success("Logged Out Succesfully")
+    alert("Logged Out Succesfully")
   };
 
   return (

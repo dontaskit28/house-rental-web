@@ -19,9 +19,10 @@ const UploadHouse = () => {
     }
   };
   return (
-    <div className="flex flex-col mt-10 items-center justify-center">
+    <div className="max-h-[100vh] min-h-[720px] bg-gray-200 flex items-center justify center">
+    <div className="w-full max-w-md m-auto">
       <form
-        className="bg-white shadow-md w-full md:w-2/3 xl:w-1/3 rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={handleUpload}
       >
         <div className="block text-center text-gray-800 text-2xl font-bold mb-4">
@@ -97,6 +98,7 @@ const UploadHouse = () => {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };

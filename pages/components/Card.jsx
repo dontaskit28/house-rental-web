@@ -2,25 +2,27 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
-import { useState,useEffect } from "react";
-// import { db } from "../../config/firebase";
-// import { useCollectionData } from "react-firebase-hooks/firestore";
-// import { collection } from "firebase/firestore";
-import { useAuth } from './../../context/AuthContext';
+import { useState, useEffect } from "react";
+import { db } from "../../config/firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { collection } from "firebase/firestore";
+import { useAuth } from "./../../context/AuthContext";
 
 export default function Card({ details }) {
   const router = useRouter();
   const [fav, setFav] = useState(false);
-  const {user} = useAuth();
+  const { user } = useAuth();
+  const query = collection(db, "users");
+  const [docs, loading] = useCollectionData(query);
   const viewHouse = useCallback(
     (houseId) => {
       router.push(`/house/${houseId}`);
     },
     [router]
   );
-    const wishlist = () =>{
-      setFav(!fav);
-    }
+  const wishlist = async () => {
+    setFav(!fav);
+  };
   return (
     <div className="flex justify-center hover:shadow-lg group ">
       <div className="rounded-lg shadow-md bg-white max-w-sm">
@@ -37,11 +39,11 @@ export default function Card({ details }) {
             <h5 className="text-gray-900 text-xl font-medium mb-2">
               {details.location}
             </h5>
-            <div onClick={wishlist}>
+            <div onClick={wishlist} className="hover:cursor-pointer">
               {fav ? (
-                <MdFavorite fill="red" size={25} />
+                <MdFavorite fill="red" size={30} />
               ) : (
-                <MdFavoriteBorder size={25} />
+                <MdFavoriteBorder size={30} />
               )}
             </div>
           </div>
