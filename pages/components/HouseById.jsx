@@ -27,7 +27,10 @@ const HouseById = ({ house }) => {
     const userDoc = await getDoc(userRef);
     const found = userDoc.data().friends.find(o=>o.user_id == user.email)
     if (found){
-        return alert("Already Sent")
+        if(found.accepted){
+          return alert("Owner's Mail : "+house.owner)
+        }
+        return alert("Waiting for Approval");
     }
     await updateDoc(userRef,{
         friends:userDoc.data().friends.concat([{user_id:user.email,accepted:false}])
