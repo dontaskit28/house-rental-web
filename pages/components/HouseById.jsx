@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { db } from "../../config/firebase";
-import { collection,getDocs,updateDoc,doc } from "firebase/firestore";
+import { collection,getDocs,updateDoc,doc,getDoc } from "firebase/firestore";
 import { useAuth } from "./../../context/AuthContext";
+import { useRouter } from 'next/router';
 
 const HouseById = ({ house }) => {
   const { user } = useAuth();
   const [owner, setOwner] = useState(null);
+  const router = useRouter();
   useEffect(() => {
     const getUsers = async () =>{
         const query = collection(db, "users");
@@ -17,8 +19,20 @@ const HouseById = ({ house }) => {
     getUsers();
   },[]);
   const Request = async() => {
-    // const userRef = doc(db,"users",owner.id)
-    // await updateDoc(userRef)
+    if(!user){
+        alert("Please Login First");
+        return router.push('/login');
+    }
+    const userRef = doc(db,"users",owner.id)
+    const userDoc = await getDoc(userRef);
+    const found = userDoc.data().friends.find(o=>o.user_id == user.email)
+    if (found){
+        return alert("Already Sent")
+    }
+    await updateDoc(userRef,{
+        friends:userDoc.data().friends.concat([{user_id:user.email,accepted:false}])
+    })
+    alert("Request Sent")
   };
   return (
     <div>
