@@ -2,10 +2,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "./../context/AuthContext";
 import { useRouter } from "next/router";
-
+import {toast} from 'react-toastify'
 
 export default function Signup() {
-  const { createUser, signup } = useAuth();
+  const { user,createUser, signup } = useAuth();
   const router = useRouter();
   const [data, setData] = useState({
     name: "",
@@ -15,10 +15,11 @@ export default function Signup() {
   });
   const Register = async (e) => {
     e.preventDefault();
+    const toid = toast.loading("Please wait...")
     try {
       await signup(data.email,data.password);
       await createUser(data);
-      alert('Account Created Succesfully')
+      toast.update(toid,{ render: "Register Success", type: "success", isLoading: false,autoClose: 2000 })
       if(user && user.isSeller){
         router.push("/uploadHouse")
       }else{
@@ -26,7 +27,8 @@ export default function Signup() {
       }
       router.push("/");
     } catch (err) {
-      alert('Account Failed to Create')
+      console.log(err)
+      toast.update(toid,{ render: "Register Failed", type: "error", isLoading: false,autoClose: 2000 })
     }
   };
   return (

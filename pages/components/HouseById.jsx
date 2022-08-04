@@ -1,41 +1,77 @@
 import { useState, useEffect } from "react";
 import { db } from "../../config/firebase";
-import { collection,getDocs,updateDoc,doc,getDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { useAuth } from "./../../context/AuthContext";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
-const HouseById = ({ house }) => {
+const HouseById = ({ house, houseid }) => {
   const { user } = useAuth();
+  const [showEmail, setShowEmail] = useState(false);
+  const [waiting, setWaiting] = useState(false);
   const [owner, setOwner] = useState(null);
   const router = useRouter();
   useEffect(() => {
-    const getUsers = async () =>{
-        const query = collection(db, "users");
-        const users = await getDocs(query);
-        users.docs.map((doc) => {
-            if (doc.data().email==house.owner) return setOwner(doc)
-        });
-    }
-    getUsers();
-  },[]);
-  const Request = async() => {
-    if(!user){
-        alert("Please Login First");
-        return router.push('/login');
-    }
-    const userRef = doc(db,"users",owner.id)
-    const userDoc = await getDoc(userRef);
-    const found = userDoc.data().friends.find(o=>o.user_id == user.email)
-    if (found){
-        if(found.accepted){
-          return alert("Owner's Mail : "+house.owner)
+    (async () => {
+      const users = await getDocs(collection(db, "users"));
+      users.docs.map(async (d) => {
+        if (d.data().email == house.owner) {
+          const userRef = doc(db, "users", d.id);
+          const userDoc = await getDoc(userRef);
+          const found = userDoc
+            .data()
+            .friends.find((o) => o.user_id == user.email && o.house == houseid);
+          if (found) {
+            if (found.accepted && found.house == houseid) {
+              return setShowEmail(true);
+            }
+            return setWaiting(true);
+          }
+          setOwner(d);
         }
-        return alert("Waiting for Approval");
+      });
+    })();
+  });
+  const Request = async () => {
+    if (!user) {
+      toast.warning("Please Login First",{autoClose:1500});
+      return router.push("/login");
     }
-    await updateDoc(userRef,{
-        friends:userDoc.data().friends.concat([{user_id:user.email,accepted:false}])
-    })
-    alert("Request Sent")
+    if (user.isSeller){
+      toast.warning("You can't rent a house..",{autoClose:1500})
+      return router.push('/uploadHouse')
+    }
+    const toid = toast.loading("Sending Request...");
+    try {
+      const userRef = doc(db, "users", owner.id);
+      const userDoc = await getDoc(userRef);
+      await updateDoc(userRef, {
+        friends: userDoc
+          .data()
+          .friends.concat([
+            { user_id: user.email, house: houseid, accepted: false },
+          ]),
+      });
+      toast.update(toid, {
+        render: "Request Sent",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
+    } catch (err) {
+      toast.update(toid, {
+        render: "Request Failed",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
+    }
   };
   return (
     <div>
@@ -68,10 +104,22 @@ const HouseById = ({ house }) => {
                   Rent - &#x20b9; {house.rent}
                 </span>
               </div>
-              <button className="flex mt-8 m-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
-                onClick={Request} >
-                Send Request to Owner
-              </button>
+              {waiting ? (
+                <div className="flex justify-center mt-10 font-semibold text-xl">
+                  " Waiting For Approval "
+                </div>
+              ) : showEmail ? (
+                <div className="flex justify-center mt-10 font-semibold text-xl">
+                  Contact Mail : {house.owner}
+                </div>
+              ) : (
+                <button
+                  className="flex mt-8 m-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                  onClick={Request}
+                >
+                  Send Request to Owner
+                </button>
+              )}
             </div>
           </div>
         </div>

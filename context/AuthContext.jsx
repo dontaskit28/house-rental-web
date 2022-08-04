@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { v4 } from "uuid";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -11,11 +10,9 @@ import { db } from "../config/firebase";
 import { storage } from "../config/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { collection, getDocs, addDoc, updateDoc } from "firebase/firestore";
-// import {message } from 'antd'
-
+import { toast } from "react-toastify";
 
 const AuthContext = createContext({});
-
 export const useAuth = () => useContext(AuthContext);
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -45,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
     return await addDoc(users, {
       email: data.email,
       name: data.name,
-      wishlist: [],
+      friends: [],
       isSeller: data.role == "landloard",
     });
   };
@@ -62,11 +59,11 @@ export const AuthContextProvider = ({ children }) => {
   };
   const uploadHome = async (data) => {
     if (user && user.isSeller) {
+      const toid = toast.loading("Uploading...");
       try {
-        const house_id = v4();
         const storageRef = ref(
           storage,
-          `houses/${data.image.name + "_" + house_id}`
+          `houses/${data.image.name+"_image_"+user.email}`
         );
         const houses = collection(db, "houses");
         const uploadTask = uploadBytesResumable(storageRef, data.image);
@@ -76,27 +73,38 @@ export const AuthContextProvider = ({ children }) => {
             console.log(snapshot);
           },
           (error) => {
-            // message.error(error);
-            alert(error)
-
+            toast.update(toid, {
+              render: { error },
+              type: "error",
+              isLoading: false,
+              autoClose: 2000,
+            });
           },
           async () => {
             getDownloadURL(uploadTask.snapshot.ref).then(
               async (downloadURL) => {
                 await addDoc(houses, {
                   ...data,
-                  _id: house_id,
                   image: downloadURL,
                   owner: user.email,
                 });
-                return alert('Uploaded House Succesfully')
+                return toast.update(toid, {
+                  render: "Uploaded Successfully",
+                  type: "success",
+                  isLoading: false,
+                  autoClose: 2000,
+                });
               }
             );
           }
         );
       } catch (err) {
-        // message.error('Failed to Upload House')
-        alert('Failed to Upload House')
+        toast.update(toid, {
+          render: "Uploaded Failed",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     }
   };
@@ -104,8 +112,7 @@ export const AuthContextProvider = ({ children }) => {
   const logout = async () => {
     setUser(null);
     await signOut(auth);
-    // message.success("Logged Out Succesfully")
-    alert("Logged Out Succesfully")
+    toast.success("Logged Out Succesfully", { autoClose: 1000 });
   };
 
   return (

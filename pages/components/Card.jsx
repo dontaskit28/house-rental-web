@@ -2,25 +2,18 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
-import { useState, useEffect } from "react";
-import { db } from "../../config/firebase";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { collection } from "firebase/firestore";
-import { useAuth } from "./../../context/AuthContext";
+import { useState } from "react";
 
 export default function Card({ details }) {
   const router = useRouter();
   const [fav, setFav] = useState(false);
-  const { user } = useAuth();
-  const query = collection(db, "users");
-  const [docs, loading] = useCollectionData(query);
   const viewHouse = useCallback(
     (houseId) => {
       router.push(`/house/${houseId}`);
     },
     [router]
   );
-  const wishlist = async () => {
+  const wishlist = () => {
     setFav(!fav);
   };
   return (
@@ -28,7 +21,7 @@ export default function Card({ details }) {
       <div className="rounded-lg shadow-md bg-white max-w-sm">
         <Image
           className="rounded-t-lg group-hover:scale-[102%] hover:cursor-pointer"
-          onClick={() => viewHouse(details._id)}
+          onClick={() => viewHouse(details.id)}
           src={details.image}
           alt=""
           height={250}

@@ -2,20 +2,21 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "./../context/AuthContext";
 import { useRouter } from "next/router";
-// import {message } from 'antd'
+import { toast } from 'react-toastify';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const {  user,afterLogin, login } = useAuth();
   const router = useRouter();
-
+  
   const handleLogin = async (e) => {
+    const toid = toast.loading("Please wait...")
     e.preventDefault();
     try {
       await login(email, password);
       await afterLogin(email);
-      alert('Login Success')
+      toast.update(toid,{ render: "Login Success", type: "success", isLoading: false,autoClose: 2000 })
       if(user && user.isSeller){
         router.push("/uploadHouse")
       }else{
@@ -23,7 +24,7 @@ export default function Login() {
       }
     } catch (err) {
       console.log("Error: ", err);
-      alert("Login Failed")
+      toast.update(toid,{ render: "Login Failed", type: "error", isLoading: false,autoClose: 2000 })
     }
   };
   
