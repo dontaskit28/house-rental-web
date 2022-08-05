@@ -70,7 +70,7 @@ export const AuthContextProvider = ({ children }) => {
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            console.log(snapshot);
+            console.log("changed");
           },
           (error) => {
             toast.update(toid, {

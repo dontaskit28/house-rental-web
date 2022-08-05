@@ -29,13 +29,15 @@ const HouseById = ({ house, houseid }) => {
             const found = userDoc
               .data()
               .friends.find(
-                (o) => o.user_id == user.email && o.house == houseid
+                (o) => o.user_id == user.email && o.house.id == houseid
               );
             if (found) {
-              if (found.accepted && found.house == houseid) {
+              if (found.accepted && found.house.id == houseid) {
                 return setShowEmail(true);
               }
               return setWaiting(true);
+            }else{
+              setWaiting(false)
             }
             setOwner(d);
           }
@@ -63,7 +65,7 @@ const HouseById = ({ house, houseid }) => {
         friends: userDoc
           .data()
           .friends.concat([
-            { user_id: user.email, house: houseid, accepted: false,mobile:mobile },
+            { user_id: user.email, house: house, accepted: false,mobile:mobile },
           ]),
       });
       toast.update(toid, {
