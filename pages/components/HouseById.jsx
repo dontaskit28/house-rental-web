@@ -16,36 +16,44 @@ const HouseById = ({ house, houseid }) => {
   const [showEmail, setShowEmail] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [owner, setOwner] = useState(null);
+  const [mobile, setMobile] = useState(0);
   const router = useRouter();
   useEffect(() => {
     (async () => {
-      const users = await getDocs(collection(db, "users"));
-      users.docs.map(async (d) => {
-        if (d.data().email == house.owner) {
-          const userRef = doc(db, "users", d.id);
-          const userDoc = await getDoc(userRef);
-          const found = userDoc
-            .data()
-            .friends.find((o) => o.user_id == user.email && o.house == houseid);
-          if (found) {
-            if (found.accepted && found.house == houseid) {
-              return setShowEmail(true);
+      if (user && !user.isSeller) {
+        const users = await getDocs(collection(db, "users"));
+        users.docs.map(async (d) => {
+          if (d.data().email == house.owner) {
+            const userRef = doc(db, "users", d.id);
+            const userDoc = await getDoc(userRef);
+            const found = userDoc
+              .data()
+              .friends.find(
+                (o) => o.user_id == user.email && o.house == houseid
+              );
+            if (found) {
+              if (found.accepted && found.house == houseid) {
+                return setShowEmail(true);
+              }
+              return setWaiting(true);
             }
-            return setWaiting(true);
+            setOwner(d);
           }
-          setOwner(d);
-        }
-      });
+        });
+      }
     })();
   });
   const Request = async () => {
     if (!user) {
-      toast.warning("Please Login First",{autoClose:1500});
+      toast.warning("Please Login First", { autoClose: 1500 });
       return router.push("/login");
     }
-    if (user.isSeller){
-      toast.warning("You can't rent a house..",{autoClose:1500})
-      return router.push('/uploadHouse')
+    if (user.isSeller) {
+      toast.warning("You can't rent a house..", { autoClose: 1500 });
+      return router.push("/uploadHouse");
+    }
+    if (!mobile || mobile.length != 10){
+      return toast.error("Invalid Mobile",{ autoClose: 1500 })
     }
     const toid = toast.loading("Sending Request...");
     try {
@@ -55,7 +63,7 @@ const HouseById = ({ house, houseid }) => {
         friends: userDoc
           .data()
           .friends.concat([
-            { user_id: user.email, house: houseid, accepted: false },
+            { user_id: user.email, house: houseid, accepted: false,mobile:mobile },
           ]),
       });
       toast.update(toid, {
@@ -113,12 +121,23 @@ const HouseById = ({ house, houseid }) => {
                   Contact Mail : {house.owner}
                 </div>
               ) : (
-                <button
-                  className="flex mt-8 m-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
-                  onClick={Request}
-                >
-                  Send Request to Owner
-                </button>
+                <div className="flex mt-8 ">
+                  <input
+                    type="tel"
+                    placeholder="Mobile Number"
+                    className="border-0 border-b-2 focus:outline-none border-blue-300 rounded-md bg-gray-200 p-2"
+                    required
+                    onChange={(e)=>{
+                      setMobile(e.target.value)
+                    }}
+                  />
+                  <button
+                    className="flex m-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                    onClick={Request}
+                  >
+                    Send Request to Owner
+                  </button>
+                </div>
               )}
             </div>
           </div>

@@ -7,30 +7,45 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { useAuth } from "./../context/AuthContext";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useRouter } from 'next/router';
 
 const requests = () => {
   const { user } = useAuth();
   const [owner, setOwner] = useState(null);
+  const [friends, setFriends] = useState([]);
   useEffect(() => {
-    if(!user)return;
-    const getUsers = async () => {
+    if (!user) {
+      return;
+    };
+    if (!user.isSeller){
+      return;
+    }
+    (async () => {
       const query = collection(db, "users");
       const users = await getDocs(query);
       users.docs.map((doc) => {
-        if (doc.data().email == user.email) return setOwner(doc);
+        if (doc.data().email == user.email) {
+          setOwner(doc);
+          setFriends(doc.data().friends)
+        }
       });
-    };
-    getUsers();
+    })();
   }, [user]);
-  return <div>
-    {owner && <div>
-        {owner.data().friends.map((dat,i)=>(
-            <div key={i}>{dat.accepted?"":dat.user_id}</div>
-        ))}
+  return (
+    <div>
+      {friends && (
+        <div>
+          {
+            friends.map((friend,i)=>(
+              <div key={i}>{friend.house}</div>
+            ))
+          }
+        </div>
+      )}
     </div>
-}
-  </div>;
+  );
 };
 
 export default requests;
