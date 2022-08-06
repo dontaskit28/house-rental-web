@@ -11,7 +11,7 @@ import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
   const signNotRequired = ["/login", "/signup"];
-  const signRequired = ["/checkout", "/profile"];
+  const signRequired = [ "/profile"];
   const router = useRouter();
   if (router.pathname == "/") {
     return (

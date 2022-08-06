@@ -63,7 +63,7 @@ export const AuthContextProvider = ({ children }) => {
       try {
         const storageRef = ref(
           storage,
-          `houses/${data.image.name+"_image_"+user.email}`
+          `houses/${data.image.name + "_image_" + user.email}`
         );
         const houses = collection(db, "houses");
         const uploadTask = uploadBytesResumable(storageRef, data.image);

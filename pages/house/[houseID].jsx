@@ -7,9 +7,8 @@ import Card from "../components/Card";
 import { isEqual } from "lodash";
 
 const houseid = () => {
-  const {
-    query: { houseid },
-  } = useRouter();
+  const router = useRouter();
+  const houseid = router.query.houseid;
   const [house, setHouse] = useState({});
   const [houses, setHouses] = useState([]);
 
