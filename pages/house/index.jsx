@@ -1,22 +1,19 @@
 import Card from "../components/Card";
-import { useState, useEffect } from "react";
-import { db } from "../../config/firebase";
-import { collection,getDocs } from "firebase/firestore";
+import { useState } from "react";
+import { getAllHouses } from './../../lib/allHouses';
 
-const House = () => {
+export const getServerSideProps = async() =>{
+  
+  const houses = await getAllHouses();
+  return {
+    props:{
+      houses,
+    }
+  }
+}
+
+const House = ({houses}) => {
   const [search, setSearch] = useState("");
-  const [houses,setHouses]=useState([])
-  useEffect(()=>{
-    ;(async() =>{
-      const snapshot = await getDocs(collection(db, "houses"))
-      const docs = snapshot.docs.map((doc)=>{
-        const data = doc.data()
-        data.id = doc.id;
-        return data
-      })
-      setHouses(docs);
-    })()
-  },[])
   return (
     <div className="h-full bg-gray-100">
       <div className="flex flex-col items-center justify-center">

@@ -9,8 +9,9 @@ import { auth } from "../config/firebase";
 import { db } from "../config/firebase";
 import { storage } from "../config/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { collection, getDocs, addDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc,doc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { isEqual } from "lodash";
 
 const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
@@ -109,6 +110,36 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const RequestAccept = async (friend, friends, owner) => {
+    const toid = toast.loading("Please Wait...");
+    try {
+      const userRef = doc(db, "users", owner);
+      await updateDoc(userRef, {
+        friends: friends.filter((fri) => {
+          if (isEqual(fri, friend)) {
+            fri.accepted = true;
+            return fri;
+          }
+          return fri;
+        }),
+      });
+      toast.update(toid, {
+        render: "Accepted",
+        type: "success",
+        isLoading: false,
+        autoClose: 1500,
+      });
+    } catch (err) {
+      console.log(err)
+      toast.update(toid, {
+        render: "Accept Failed",
+        type: "error",
+        isLoading: false,
+        autoClose: 1500,
+      });
+    }
+  };
+
   const logout = async () => {
     setUser(null);
     await signOut(auth);
@@ -125,6 +156,7 @@ export const AuthContextProvider = ({ children }) => {
         createUser,
         afterLogin,
         uploadHome,
+        RequestAccept,
       }}
     >
       {loading ? null : children}

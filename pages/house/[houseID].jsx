@@ -1,49 +1,32 @@
-import { useState, useEffect } from "react";
-import { db } from "../../config/firebase";
-import { doc, getDoc, getDocs, collection } from "firebase/firestore";
-import { useRouter } from "next/router";
 import HouseById from "./../components/HouseById";
 import Card from "../components/Card";
-import { isEqual } from "lodash";
+import { houseById, housesNearBy,getOwner } from "../../lib/allHouses";
 
-const houseid = () => {
-  const router = useRouter();
-  const houseid = router.query.houseid;
-  const [house, setHouse] = useState({});
-  const [houses, setHouses] = useState([]);
+export const getServerSideProps = async (context) => {
+  const houseid = context.params.houseid;
+  const house = await houseById(houseid);
+  let notFound = false;
+  let houses = [];
+  if (!house) {
+    notFound = true;
+    houses = [];
+  } else {
+    houses = await housesNearBy(house);
+  }
+  return {
+    notFound,
+    props: {
+      house,
+      houses,
+    },
+  };
+};
 
-  useEffect(() => {
-    (async () => {
-      if (!houseid) return false;
-      const docRef = doc(db, "houses", houseid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        data.id = docSnap.id;
-        const houseSnaps = await getDocs(collection(db, "houses"));
-        let temp = [];
-        houseSnaps.docs.map((hou) => {
-          const data2 = hou.data();
-          data2.id = hou.id;
-          if (!isEqual(data2, data)) {
-            if (
-              hou.data().location.toLowerCase() === data.location.toLowerCase()
-            ) {
-              temp.push(data2);
-            }
-          }
-        });
-        setHouse(data);
-        setHouses(temp);
-      } else {
-        alert("Not Found");
-      }
-    })();
-  }, [houseid]);
+const houseid = ({ house, houses }) => {
   return (
     <div className="min-h-[720px] bg-gray-200 flex flex-col items-center justify center">
       <div className="bg-gray-200 flex items-center justify center">
-        {house && <HouseById house={house} houseid={houseid} />}
+        {house && <HouseById houseid={house.id} house={house} />}
       </div>
       {houses.length ? (
         <div>

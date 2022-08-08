@@ -1,17 +1,18 @@
-import { db } from "../config/firebase";
-import {
-  collection,
-  getDocs,
-  updateDoc,
-  doc,
-  getDoc,
-} from "firebase/firestore";
 import { useAuth } from "./../context/AuthContext";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { isEqual } from "lodash";
-const requests = () => {
-  const { user } = useAuth();
+import { allUsers } from "../lib/allHouses";
+
+export const getServerSideProps = async()=>{
+  const users = await allUsers();
+  return{
+    props:{
+      users,
+    }
+  }
+}
+
+const requests = ({users}) => {
+  const { user,RequestAccept } = useAuth();
   const [owner, setOwner] = useState(null);
   const [friends, setFriends] = useState([]);
   useEffect(() => {
@@ -22,12 +23,10 @@ const requests = () => {
       return;
     }
     (async () => {
-      const query = collection(db, "users");
-      const users = await getDocs(query);
-      users.docs.map((doc) => {
-        if (doc.data().email == user.email) {
+      users.map((doc) => {
+        if (doc.email == user.email) {
           setOwner(doc);
-          setFriends(doc.data().friends);
+          setFriends(doc.friends);
         }
       });
     })();
@@ -35,28 +34,18 @@ const requests = () => {
 
   const AcceptRequest = async (friend) => {
     try {
-      const userRef = doc(db, "users", owner.id);
-      await updateDoc(userRef, {
-        friends: friends.filter((fri) => {
-          if (isEqual(fri, friend)) {
-            fri.accepted = true;
-            return fri;
-          }
-          return fri;
-        }),
-      });
-      toast.success("Accepted", { autoClose: 1500 });
-      window.location.reload();
+      await RequestAccept(friend,friends,owner.id);
+      return window.location.reload();
     } catch (err) {
       alert(err);
     }
   };
   return (
-    <div className="flex flex-col w-screen items-center justify-center bg-gray-100">
+    <div className="flex flex-col w-full items-center justify-center bg-gray-100">
       {friends && (
         <div className="flex justify-center flex-col items-center min-h-[720px]">
           {friends.map((friend, i) => (
-            <div key={i} className="flex m-4 justify-center items-start">
+            <div key={i} className="flex m-4 justify-center bg-white rounded-xl hover:shadow-lg shadow-md md:min-w-[640px] p-4 items-start">
               <div className="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
                 <img
                   alt="team"
@@ -77,7 +66,7 @@ const requests = () => {
                     </div>
                   ) : (
                     <button
-                      className="flex text-white justify-center bg-indigo-500 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-600 rounded"
+                      className="flex text-white justify-center bg-indigo-400 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-600 rounded"
                       onClick={() => AcceptRequest(friend)}
                     >
                       Accept Request
