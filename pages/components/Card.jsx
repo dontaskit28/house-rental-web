@@ -3,18 +3,22 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
-export default function Card({ details }) {
+export default function Card({ details, isOwner }) {
   const router = useRouter();
   const [fav, setFav] = useState(false);
+  const {setAvailable} = useAuth();
   const viewHouse = useCallback(
     (houseId) => {
+      if (isOwner) return;
       router.push(`/house/${houseId}`);
     },
     [router]
   );
-  const wishlist = () => {
-    setFav(!fav);
+  const handleAvailable = async () => {
+    await setAvailable(details);
+    window.location.reload()
   };
   return (
     <div className="flex justify-center hover:shadow-lg group ">
@@ -32,7 +36,12 @@ export default function Card({ details }) {
             <h5 className="text-gray-900 text-xl font-medium mb-2">
               {details.location}
             </h5>
-            <div onClick={wishlist} className="hover:cursor-pointer">
+            <div
+              onClick={() => {
+                setFav(!fav);
+              }}
+              className="hover:cursor-pointer"
+            >
               {fav ? (
                 <MdFavorite fill="red" size={30} />
               ) : (
@@ -40,13 +49,30 @@ export default function Card({ details }) {
               )}
             </div>
           </div>
-          <p className="text-gray-700 text-base mb-4">
-            Some quick example text to build
-          </p>
-          <div className="flex justify-evenly">
+          {isOwner ? (
+            ""
+          ) : (
+            <p className="text-gray-700 text-base mb-4">
+              {details.description.slice(0, 60) + "..."}
+            </p>
+          )}
+          <div className="flex justify-evenly mb-4">
             <div>{"Buy : " + details.buy + "/-"}</div>
             <div>{"Rent : " + details.rent + "/-"}</div>
           </div>
+          {isOwner ? (
+            <div className="flex justify-evenly">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="submit"
+                onClick={handleAvailable}
+              >
+                {details.available ? "Make Sold Out" : "Make Available"}
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

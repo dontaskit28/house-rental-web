@@ -1,6 +1,7 @@
 import Card from "../components/Card";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { getAllHouses } from './../../lib/allHouses';
+import { useAuth } from './../../context/AuthContext';
 
 export const getServerSideProps = async() =>{
   
@@ -13,7 +14,20 @@ export const getServerSideProps = async() =>{
 }
 
 const House = ({houses}) => {
+  const {user} = useAuth();
   const [search, setSearch] = useState("");
+  const [Houses,setHouses] = useState([]);
+  useEffect(()=>{
+    if(user && user.isSeller){
+      setHouses(houses.filter((house)=>{
+        if (house.owner === user.email) return house;
+      }))
+    }else{
+      setHouses(houses.filter((house)=>{
+        if (house.available) return house;
+      }));
+    }
+  },[user])
   return (
     <div className="h-full bg-gray-100">
       <div className="flex flex-col items-center justify-center">
@@ -26,7 +40,7 @@ const House = ({houses}) => {
       </div>
       <div className="mt-10 grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-y-10">
         {[
-          houses
+          Houses
             .filter((house) => {
               if (search == "") return house;
               if (
@@ -36,7 +50,7 @@ const House = ({houses}) => {
               )
                 return house;
             })
-            .map((house) => <Card details={house} key={house.id} />),
+            .map((house) => <Card details={house} key={house.id} isOwner={user && user.isSeller}/>),
         ]}
       </div>
     </div>

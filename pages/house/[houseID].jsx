@@ -1,6 +1,6 @@
 import HouseById from "./../components/HouseById";
 import Card from "../components/Card";
-import { houseById, housesNearBy,getOwner } from "../../lib/allHouses";
+import { houseById, housesNearBy } from "../../lib/allHouses";
 
 export const getServerSideProps = async (context) => {
   const houseid = context.params.houseid;

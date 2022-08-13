@@ -23,7 +23,7 @@ export default function Signup() {
         render: "Register Success",
         type: "success",
         isLoading: false,
-        autoClose: 2000,
+        autoClose: 1500,
       });
       if (user && user.isSeller) {
         router.push("/uploadHouse");
@@ -37,7 +37,7 @@ export default function Signup() {
         render: "Register Failed",
         type: "error",
         isLoading: false,
-        autoClose: 2000,
+        autoClose: 1500,
       });
     }
   };

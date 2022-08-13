@@ -88,6 +88,7 @@ export const AuthContextProvider = ({ children }) => {
                   ...data,
                   image: downloadURL,
                   owner: user.email,
+                  available:true,
                 });
                 return toast.update(toid, {
                   render: "Uploaded Successfully",
@@ -146,6 +147,30 @@ export const AuthContextProvider = ({ children }) => {
     toast.success("Logged Out Succesfully", { autoClose: 1000 });
   };
 
+  const setAvailable = async (details)=>{
+    const toid = toast.loading("Updating...");
+    try {
+      const houseRef = doc(db, "houses", details.id);
+      await updateDoc(houseRef, {
+        available: !details.available,
+      });
+      toast.update(toid, {
+        render: "Updated",
+        type: "success",
+        isLoading: false,
+        autoClose: 1500,
+      });
+    } catch (err) {
+      console.log(err);
+      toast.update(toid, {
+        render: "Update Failed",
+        type: "error",
+        isLoading: false,
+        autoClose: 1500,
+      });
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -157,6 +182,7 @@ export const AuthContextProvider = ({ children }) => {
         afterLogin,
         uploadHome,
         RequestAccept,
+        setAvailable,
       }}
     >
       {loading ? null : children}

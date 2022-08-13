@@ -26,6 +26,10 @@ const Navbar = () => {
       if (user.isSeller) {
         setRoutes([
           {
+            name: "Home",
+            path: "/house",
+          },
+          {
             name: "Upload House",
             path: "/uploadHouse",
           },
