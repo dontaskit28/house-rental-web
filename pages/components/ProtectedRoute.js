@@ -1,30 +1,23 @@
+import { useAuth } from "./../../context/AuthContext";
+import { useRouter } from "next/router";
 
-import { useAuth } from './../../context/AuthContext';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (user) {
+    return children;
+  } else {
+    return null;
+  }
+};
 
-// const ProtectedRoute =({children}) =>{
-//     const {user} = useAuth();
-//     const router = useRouter();
-//     useEffect(()=>{
-//         if(!user){
-//             router.push('/login')
-//         }
-//     },[router,user])
+export default ProtectedRoute;
 
-//     return <>{user?children:null}</>
-// }
-
-// export default ProtectedRoute;
-
-export const SignedIn = ({children} )=>{
-    const {user} = useAuth();
-    const router = useRouter();
-    useEffect(()=>{
-        if(user){
-            router.push('/house')
-        }
-    },[router,user])
-    return <>{user?null:children}</>
-}
-
+export const SignedIn = ({ children }) => {
+  const { user } = useAuth();
+  const router = useRouter();
+  if (user) {
+    router.push("/house");
+  } else {
+    return children;
+  }
+};

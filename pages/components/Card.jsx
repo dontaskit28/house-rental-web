@@ -63,11 +63,11 @@ export default function Card({ details, isOwner }) {
           {isOwner ? (
             <div className="flex justify-evenly">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className={`${details.available?"bg-blue-500 hover:bg-blue-700":"bg-red-500 hover:bg-red-700"} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
                 type="submit"
                 onClick={handleAvailable}
               >
-                {details.available ? "Make Sold Out" : "Make Available"}
+                {details.available ? "Set Sold Out" : "Set Available"}
               </button>
             </div>
           ) : (

@@ -4,9 +4,10 @@ import Navbar from "./components/NavBar";
 import { AuthContextProvider } from "../context/AuthContext";
 import "../config/firebase";
 import { useRouter } from "next/router";
-import { SignedIn } from "./components/ProtectedRoute";
+import ProtectedRoute, { SignedIn } from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import Head from "next/head";
+import NextNProgress from "nextjs-progressbar";
 
 function MyApp({ Component, pageProps }) {
   const signNotRequired = ["/login", "/signup"];
@@ -15,12 +16,12 @@ function MyApp({ Component, pageProps }) {
     return (
       <AuthContextProvider>
         <Head>
-        <title>House Rental</title>
-        <link
-          rel="shortcut icon"
-          href="https://firebasestorage.googleapis.com/v0/b/rentalweb-ed0e7.appspot.com/o/Graphicloads-100-Flat-Home.ico?alt=media&token=68af2acb-c887-4b10-b51a-3a4fcd8f1fa3"
-        />
-      </Head>
+          <title>House Rental</title>
+          <link
+            rel="shortcut icon"
+            href="https://firebasestorage.googleapis.com/v0/b/rentalweb-ed0e7.appspot.com/o/Graphicloads-100-Flat-Home.ico?alt=media&token=68af2acb-c887-4b10-b51a-3a4fcd8f1fa3"
+          />
+        </Head>
         <ToastContainer />
         <SignedIn>
           <Component {...pageProps} />
@@ -38,6 +39,7 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <ToastContainer />
+      <NextNProgress />
       <Navbar />
       {router.pathname.includes("/components") ? (
         <div className="flex items-center justify-center mt-10 text-2xl font-bold">
@@ -47,6 +49,10 @@ function MyApp({ Component, pageProps }) {
         <SignedIn>
           <Component {...pageProps} />
         </SignedIn>
+      ) : router.pathname.includes("/profile") ? (
+        <ProtectedRoute>
+          <Component {...pageProps} />
+        </ProtectedRoute>
       ) : (
         <Component {...pageProps} />
       )}

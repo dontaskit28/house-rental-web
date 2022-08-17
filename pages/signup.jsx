@@ -25,9 +25,7 @@ export default function Signup() {
         isLoading: false,
         autoClose: 1500,
       });
-      if (user && user.isSeller) {
-        router.push("/uploadHouse");
-      } else {
+      if (user) {
         router.push("/house");
       }
       router.push("/");

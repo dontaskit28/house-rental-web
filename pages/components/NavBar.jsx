@@ -58,7 +58,7 @@ const Navbar = () => {
         <Link href="/">
         <div className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0 hover:cursor-pointer">
           <ImHome size={30} />
-          <span className="ml-5 text-2xl">Welcomes You</span>
+          <span className="ml-5 text-2xl font-bold font-mono">RENT YOUR DREAM HOUSE</span>
         </div>
         </Link>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
