@@ -2,7 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
 import UploadHouse from "./components/UploadHouse";
 
-const uploadHouse = () => {
+const UploadHouses = () => {
   const { user } = useAuth();
   return (
     <div>
@@ -12,7 +12,7 @@ const uploadHouse = () => {
         ) : (
           <div className="flex flex-col space-y-2 items-center justify-center mt-10">
             <h1 className="text-2xl font-bold">
-              You Dont't Have Permission to Upload a House
+              You Do not Have Permission to Upload a House
             </h1>
             <Link href="/house">
               <button className="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
@@ -35,4 +35,4 @@ const uploadHouse = () => {
   );
 };
 
-export default uploadHouse;
+export default UploadHouses;

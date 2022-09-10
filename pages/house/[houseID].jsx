@@ -35,7 +35,7 @@ const houseid = ({ house, houses }) => {
           </div>
           <div className="mb-10 mt-10 grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-10">
             {houses.map((house, i) => (
-              <Card details={house} key={i} />
+              <Card details={house} isOwner={false} key={i} />
             ))}
           </div>
         </div>

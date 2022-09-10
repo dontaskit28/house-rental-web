@@ -1,6 +1,6 @@
 import { useAuth } from "../context/AuthContext";
 
-export default function profile() {
+const Profile =() => {
   const { user } = useAuth();
   if (!user) {
     return <div>You are not logged in</div>;
@@ -34,3 +34,5 @@ export default function profile() {
     </div>
   );
 }
+
+export default Profile;

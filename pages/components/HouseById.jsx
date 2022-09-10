@@ -116,7 +116,7 @@ const HouseById = ({ house, houseid }) => {
               </div>
               {waiting ? (
                 <div className="flex justify-center mt-10 font-semibold text-xl">
-                  " Waiting For Approval "
+                   Waiting For Approval
                 </div>
               ) : showEmail ? (
                 <div className="flex justify-center mt-10 font-semibold text-xl">

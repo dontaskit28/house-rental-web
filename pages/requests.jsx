@@ -11,7 +11,7 @@ export const getServerSideProps = async()=>{
   }
 }
 
-const requests = ({users}) => {
+const Requests = ({users}) => {
   const { user,RequestAccept } = useAuth();
   const [owner, setOwner] = useState(null);
   const [friends, setFriends] = useState([]);
@@ -82,4 +82,4 @@ const requests = ({users}) => {
   );
 };
 
-export default requests;
+export default Requests;

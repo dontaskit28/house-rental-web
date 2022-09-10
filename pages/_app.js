@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }) {
       <Navbar />
       {router.pathname.includes("/components") ? (
         <div className="flex items-center justify-center mt-10 text-2xl font-bold">
-          You Don't Have Permission To Be Here
+          You Do not Have Permission To Be Here
         </div>
       ) : signNotRequired.includes(router.pathname) ? (
         <SignedIn>
