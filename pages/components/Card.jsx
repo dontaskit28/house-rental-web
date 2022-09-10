@@ -67,7 +67,7 @@ export default function Card({ details, isOwner }) {
                 type="submit"
                 onClick={handleAvailable}
               >
-                {details.available ? "Set Sold Out" : "Set Available"}
+                {details.available ? "Available" : "Sold Out"}
               </button>
             </div>
           ) : (

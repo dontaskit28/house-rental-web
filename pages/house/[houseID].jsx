@@ -3,7 +3,7 @@ import Card from "../components/Card";
 import { houseById, housesNearBy } from "../../lib/allHouses";
 
 export const getServerSideProps = async (context) => {
-  const houseid = context.params.houseid;
+  const houseid = context.params.houseID;
   const house = await houseById(houseid);
   let notFound = false;
   let houses = [];
