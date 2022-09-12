@@ -53,7 +53,7 @@ export const AuthContextProvider = ({ children }) => {
   const afterLogin = async (email) => {
     const querySnapshot = await getDocs(collection(db, "users"));
     querySnapshot.forEach((doc) => {
-      if (doc.data().email === email) {
+      if (doc.data().email.toLowerCase() === email.toLowerCase()) {
         return setUser(doc.data());
       }
     });

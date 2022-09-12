@@ -14,6 +14,7 @@ export const getServerSideProps = async()=>{
 const Requests = ({users}) => {
   const { user,RequestAccept } = useAuth();
   const [owner, setOwner] = useState(null);
+  const [click,setClick] = useState(true);
   const [friends, setFriends] = useState([]);
   useEffect(() => {
     if (!user) {
@@ -30,12 +31,13 @@ const Requests = ({users}) => {
         }
       });
     })();
-  }, [user]);
+  }, [user,click]);
 
   const AcceptRequest = async (friend) => {
     try {
       await RequestAccept(friend,friends,owner.id);
-      return window.location.reload();
+      setClick(!click);
+      return;
     } catch (err) {
       alert(err);
     }

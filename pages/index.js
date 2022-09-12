@@ -1,42 +1,74 @@
 import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Autoplay } from "swiper";
 
 const Banner = () => {
   return (
-    <div className="bg-purple-100">
-    <div className="h-screen w-11/12 flex m-auto justify-center items-center">
-      <section className="h-full max-h-[640px]">
-        <div className="flex flex-col lg:flex-row">
-          <div className="lg:ml-8 xl:ml-[135px] flex flex-col items-center lg:items-start text-center lg:text-left justify-center flex-1 px-4 lg:px-0">
-            <h1 className="text-4xl lg:text-[58px] font-semibold leading-none mb-6">
-              <span className="text-violet-700">Rent</span> Your Dream House
-              With Us.
-            </h1>
-            <p className="max-w-[480px] mb-8">
-              Powerful, self-serve product and growth analytics to help you
-              convert, engage, and retain more.
-            </p>
-            <div className="flex justify-evenly w-72 mt-10">
-              <Link href="/uploadHouse">
-                <button className="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
-                  Owner
-                </button>
-              </Link>
-              <Link href="/house">
-                <button className="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
-                  Customer
-                </button>
-              </Link>
-            </div>
-          </div>
-          <div className="hidden flex-1 lg:flex justify-end items-end">
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/rentalweb-ed0e7.appspot.com/o/house-banner.png?alt=media&token=385cde86-f09c-4f08-986c-122131c93c76"
-              alt=""
-            />
+    <div className="flex h-screen w-screen items-center">
+      <div className="z-10 absolute w-screen h-screen bg-purple-300/25"></div>
+      <div className="h-screen max-w-screen w-screen z-20 p-5">
+        <div className="flex flex-col text-white text-shadow-2xl items-center mt-40 m-auto lg:max-w-[1200px]">
+          <h1 className="lg:text-[58px] font-semibold leading-none mb-6">
+            <span className="text-4xl lg:text-6xl font-bold font-body">CHOOSE YOUR HOME WITH US</span>
+          </h1>
+          <p className="max-w-[600px] w-full flex items-center font-bold font-body2 text-lg lg:text-3xl mb-8">
+          With everything you have ever dreamt of at your fingertips, you may not want to leave.
+          </p>
+          <div className="flex justify-evenly w-96 mt-10">
+            <Link href="/uploadHouse">
+              <button className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">
+                OWNER
+              </button>
+            </Link>
+            <Link href="/house">
+              <button className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">
+                CUSTOMER
+              </button>
+            </Link>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+      <div className="w-screen absolute z-0 right-0 bottom-0 h-screen">
+        <Swiper
+          spaceBetween={30}
+          centeredSlides={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          navigation={false}
+          modules={[Autoplay]}
+          className="mySwiper"
+        >
+          <SwiperSlide>
+            <img
+              className="object-fill w-full h-screen rounded-md"
+              src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmVhdXRpZnVsJTIwaG91c2V8ZW58MHx8MHx8&w=1000&q=80"
+              alt="image slide 1"
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className="object-fill w-full h-screen rounded-md"
+              src="https://img.onmanorama.com/content/dam/mm/en/lifestyle/decor/images/2022/1/27/4-cent-trivandrum-home-view.jpg"
+              alt="image slide 2"
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className="object-fill w-full h-screen rounded-md"
+              src="https://foyr.com/learn/wp-content/uploads/2022/02/best-home-staging-ideas-to-sell-your-house.jpg"
+              alt="image slide 3"
+            />
+          </SwiperSlide>
+        </Swiper>
+      </div>
     </div>
   );
 };

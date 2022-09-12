@@ -40,7 +40,7 @@ export default function Signup() {
     }
   };
   return (
-    <div className="max-h-[100vh] min-h-[720px] bg-gray-200 flex items-center justify center">
+    <div className="max-h-[100vh] min-h-[775px] bg-gray-200 flex items-center justify center">
       <div className="w-full max-w-sm m-auto">
         <form
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"

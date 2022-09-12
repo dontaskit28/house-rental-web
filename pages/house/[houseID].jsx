@@ -24,7 +24,7 @@ export const getServerSideProps = async (context) => {
 
 const houseid = ({ house, houses }) => {
   return (
-    <div className="min-h-[720px] bg-gray-200 flex flex-col items-center justify center">
+    <div className="min-h-[775px] bg-gray-200 flex flex-col items-center justify center">
       <div className="bg-gray-200 flex items-center justify center">
         {house && <HouseById houseid={house.id} house={house} />}
       </div>

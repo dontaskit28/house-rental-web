@@ -17,6 +17,7 @@ const House = ({houses}) => {
   const {user} = useAuth();
   const [search, setSearch] = useState("");
   const [Houses,setHouses] = useState([]);
+  
   useEffect(()=>{
     if(user && user.isSeller){
       setHouses(houses.filter((house)=>{
@@ -29,7 +30,7 @@ const House = ({houses}) => {
     }
   },[user])
   return (
-    <div className="h-full bg-gray-100">
+    <div className="h-full bg-gray-100 min-h-screen">
       <div className="flex flex-col items-center justify-center">
         <input
           className=" p-3 border-2 border-gray-200 rounded-lg w-96 m-2"

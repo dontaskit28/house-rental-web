@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback,useEffect } from "react";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 
-export default function Card({ details, isOwner }) {
+export default function Card({ details, isOwner}) {
   const router = useRouter();
   const [fav, setFav] = useState(false);
   const {setAvailable} = useAuth();
