@@ -19,12 +19,12 @@ const Banner = () => {
           </p>
           <div className="flex justify-evenly w-96 mt-10">
             <Link href="/uploadHouse">
-              <button className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">
+              <button className="bg-blue-600 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded-lg">
                 OWNER
               </button>
             </Link>
             <Link href="/house">
-              <button className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">
+              <button className="bg-blue-600 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded-lg">
                 CUSTOMER
               </button>
             </Link>
